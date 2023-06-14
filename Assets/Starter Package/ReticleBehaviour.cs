@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -37,14 +35,14 @@ public class ReticleBehaviour : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   
+        CurrentPlane = null;
         // TODO: Conduct a ray cast to position this object.
         var screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         var hits = new List<ARRaycastHit>();
         DrivingSurfaceManager.RaycastManager.Raycast(screenCenter, hits, TrackableType.PlaneWithinBounds);
-        CurrentPlane = null;
         ARRaycastHit? hit = null;
-        if (hits.Length > 0)
+        if (hits.Count > 0)
         {   
     // If you don't have a locked plane already...
             var lockedPlane = DrivingSurfaceManager.LockedPlane;
@@ -56,9 +54,9 @@ public class ReticleBehaviour : MonoBehaviour
         }
         if (hit.HasValue)
         {
-        CurrentPlane = DrivingSurfaceManager.PlaneManager.GetPlane(hit.Value.trackableId);
+            CurrentPlane = DrivingSurfaceManager.PlaneManager.GetPlane(hit.Value.trackableId);
     // Move this reticle to the location of the hit.
-        transform.position = hit.Value.pose.position;
+            transform.position = hit.Value.pose.position;
         }
         Child.SetActive(CurrentPlane != null);
     }
