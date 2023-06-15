@@ -46,7 +46,6 @@ public class DrivingSurfaceManager : MonoBehaviour
         PlaneManager = GetComponent<ARPlaneManager>();
         RaycastManager = GetComponent<ARRaycastManager>();
     }
-
     private void Update()
     {
         if (LockedPlane?.subsumedBy != null)
