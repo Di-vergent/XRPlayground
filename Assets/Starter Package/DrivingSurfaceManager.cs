@@ -18,6 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 public class DrivingSurfaceManager : MonoBehaviour
 {
@@ -28,16 +29,16 @@ public class DrivingSurfaceManager : MonoBehaviour
     public void LockPlane(ARPlane keepPlane)
     {
         // Disable all planes except the one we want to keep
-        var arPlane = keepPlane.GetComponent<ARPlane>();
+        
         foreach (var plane in PlaneManager.trackables)
         {
-            if (plane != arPlane)
+            if (plane != keepPlane)
             {
                 plane.gameObject.SetActive(false);
             }
         }
 
-        LockedPlane = arPlane;
+        LockedPlane = keepPlane;
         PlaneManager.planesChanged += DisableNewPlanes;
     }
 
@@ -48,7 +49,7 @@ public class DrivingSurfaceManager : MonoBehaviour
     }
     private void Update()
     {
-        if (LockedPlane?.subsumedBy != null)
+        if (LockedPlane != null && LockedPlane.subsumedBy != null)
         {
             LockedPlane = LockedPlane.subsumedBy;
         }
